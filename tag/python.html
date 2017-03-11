@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>iakyi blog - python</title>
+
+    <link rel="stylesheet" href="http://iakyi.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" href="http://iakyi.github.io/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="http://iakyi.github.io/theme/css/style.css" />
+    <link rel="stylesheet" href="http://iakyi.github.io/theme/css/pygments.css" />	
+    <script src="http://iakyi.github.io/theme/js/custom.modernizr.js"></script>
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="feeds/all.atom.xml" rel="alternate" title="iakyi blog" type="application/atom+xml">
+
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="http://iakyi.github.io">iakyi blog</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+
+    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+        
+        
+
+            <article>
+                <a href="http://iakyi.github.io/pelicandeburogukadowoshi-itai-soreembedly-carddechu-lai-ruyo.html"><h3 class="article-title">pelicanでブログカードを使いたい、それembedly-cardで出来るよ</h3></a>
+<h6 class="subheader" title="2017-03-11T04:50:23.958843+09:00">Sat 11 March 2017
+</h6>
+
+
+<p>ブログを書いてると、リンクはきれいに表示したいと言うのが、人の常だと思います。</p>
+<p>はてななんかだと、はてな記法で簡単にブログカードが出来るし、wordpressでも同じ。</p>
+<a class='embedly-card' data-card-chrome='0' href='http://blog.muuny-blue.info/e38e37a99f7de1f45d169efcdb288dd1.html'></a>
+                <script>
+                !function(a){
+                    var b="embedly-platform",c="script";
+                    if(!a.getElementById(b)){
+                        var d=a.createElement(c);
+                        d.id=b;
+                        d.src=("https:"===document.location.protocol?"https":"http")+"://cdn.embedly.com/widgets/platform.js";
+                        var e=document.getElementsByTagName(c)[0];e.parentNode.insertBefore(d,e)}
+                    }(document);
+                </script>
+                <p>これを使えば、pelicanでも簡単に出来るみたいだけど、それはそれ markdown を使っているのが前提。</p>
+<a class='embedly-card' data-card-chrome='0' href='https://nelog.jp/embedly'></a>
+                <script>
+                !function(a){
+                    var b="embedly-platform",c="script";
+                    if(!a.getElementById(b)){
+                        var d=a.createElement(c);
+                        d.id=b;
+                        d.src=("https:"===document.location.protocol?"https":"http")+"://cdn.embedly.com/widgets/platform.js";
+                        var e=document.getElementsByTagName(c)[0];e.parentNode.insertBefore(d,e)}
+                    }(document);
+                </script>
+                <p>こちらによれば、chrome拡張を使えば生のhtmlを発行してくれるみたいだけど、ちょっと面倒。</p>
+<p>で、pelicanでrestructuredtextでブログカードとなれば、これ使うしかない。</p>
+<a class='embedly-card' data-card-chrome='0' href='https://github.com/josh146/embedly_cards'></a>
+                <script>
+                !function(a){
+                    var b="embedly-platform",c="script";
+                    if(!a.getElementById(b)){
+                        var d=a.createElement(c);
+                        d.id=b;
+                        d.src=("https:"===document.location.protocol?"https":"http")+"://cdn.embedly.com/widgets/platform.js";
+                        var e=document.getElementsByTagName(c)[0];e.parentNode.insertBefore(d,e)}
+                    }(document);
+                </script>
+                <p>ただ、pelicanの3.7.1では、エラーが出てうまく行かなかったので、以下の通り書き換えた。</p>
+<div class="highlight"><pre><span></span><span class="gh">diff --git a/embedly_cards/card_rst.py b/embedly_cards/card_rst.py</span>
+<span class="gh">index 7dc6271..071de73 100644</span>
+<span class="gd">--- a/embedly_cards/card_rst.py</span>
+<span class="gi">+++ b/embedly_cards/card_rst.py</span>
+<span class="gu">@@ -48,5 +48,5 @@ def content_object_init(instance):</span>
+     directives.register_directive(&#39;embedly-card&#39;, EmbedlyCard)
+
+ def register():
+<span class="gd">-    signals.content_object_init.connect(content_object_init)</span>
+<span class="gi">+    signals.initialized.connect(content_object_init)</span>
+</pre></div>
+<p>書き換えたら、後は</p>
+<div class="highlight"><pre><span></span>python setup.py install
+</pre></div>
+<p>で、インストール。 あとは、こんなふうに書くだけ。</p>
+<div class="highlight"><pre><span></span>.. embedly-card:: http://www.yahoo.co.jp
+</pre></div>
+<a class='embedly-card' data-card-chrome='0' href='http://www.yahoo.co.jp'></a>
+                <script>
+                !function(a){
+                    var b="embedly-platform",c="script";
+                    if(!a.getElementById(b)){
+                        var d=a.createElement(c);
+                        d.id=b;
+                        d.src=("https:"===document.location.protocol?"https":"http")+"://cdn.embedly.com/widgets/platform.js";
+                        var e=document.getElementsByTagName(c)[0];e.parentNode.insertBefore(d,e)}
+                    }(document);
+                </script>
+                <p class="subheader">Category: <a href="http://iakyi.github.io/category/blog.html">blog</a>
+
+    Tagged: 
+    <a href="http://iakyi.github.io/tag/pelican.html">pelican </a>
+    <a href="http://iakyi.github.io/tag/python.html">python </a>
+</p>
+
+
+
+            </article>
+
+<div class="pagination-centered">
+<h6 class="subheader">Page 1 of 1</h6>
+
+<p>
+
+</p>
+</div>
+
+
+
+            <!-- /#posts-list -->
+
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="http://iakyi.github.io/archives.html">Archives</a>
+            <li><a href="http://iakyi.github.io/tags.html">Tags</a>
+
+
+                <li><a href="http://iakyi.github.io/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
+        </ul>
+
+		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+            <li><a href="http://iakyi.github.io/category/blog.html">blog</a></li>
+   
+        </ul>
+
+        <h5 class="sidebar-title">Links</h5>
+        <ul class="side-nav">
+            <li><a href="http://getpelican.com/">Pelican</a></li>
+            <li><a href="http://python.org/">Python.org</a></li>
+            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+        </ul>
+		
+        <h5 class="sidebar-title">Social</h5>
+        <ul class="side-nav">
+            <li><a href="#">You can add links in your config file</a></li>
+            <li><a href="#">Another social link</a></li>
+        </ul>
+
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>iakyi blog by iakyi</p>
+            </div>
+            </div>
+    </div>
+</footer>
